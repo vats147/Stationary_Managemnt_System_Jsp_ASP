@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace Statnoray
+{
+    public partial class login : System.Web.UI.Page
+    {
+       
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            SqlConnection con = new SqlConnection("Data Source=DESKTOP-CG0QM8J\\SQLEXPRESS;Initial Catalog=statnory;Integrated Security=True");
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbluser where userEmail='" + TextBox1.Text + "' AND userPassword='" + TextBox2.Text + "'",con);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+            if(dr.Read())
+            {
+                Session["id"] = dr.GetValue(0);
+                Response.Redirect("Default.aspx");
+            }else
+            {
+
+                Response.Write("data not match");
+            }
+            con.Close();
+        }
+    }
+}
